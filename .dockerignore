@@ -1,0 +1,36 @@
+# What git tolerates locally must not reach a build context: a build context becomes a
+# layer, and a layer becomes an artefact someone else pulls.
+
+# --- Secrets ---------------------------------------------------------------------------
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# --- Not needed to run -----------------------------------------------------------------
+tests/
+docs/
+*.md
+.github/
+.pre-commit-config.yaml
+Makefile
+
+# --- Local noise -----------------------------------------------------------------------
+.git/
+.venv/
+**/__pycache__/
+**/*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.claude/
+.idea/
+.vscode/
+build/
+dist/
+
+# NOTE: data/ is *not* excluded. The pack is synthetic and the image needs it to run with
+# one command. `*.md` above is anchored at the root, so the pack's own Markdown records
+# (data/meridian_case_pack/people/*.md …) are kept.

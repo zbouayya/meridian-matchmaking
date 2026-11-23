@@ -1,0 +1,230 @@
+edge_id,source,target,type,strength,last_interaction,visibility,evidence_doc,note
+E-0001,P-001,P-004,co_attended_session,2,2026-01-21,members,N-01,
+E-0002,P-001,P-004,co_member_initiative,3,2026-06-30,public,I-01,
+E-0003,P-001,P-004,worked_with,4,2026-05-03,members,,Atlas Logistics ships equipment for Sahara Solar.
+E-0004,P-001,P-005,board_peer,4,2026-10-15,members,,Both sit on the Forum's Energy Council board.
+E-0005,P-001,P-005,co_attended_session,2,2026-01-21,members,N-01,
+E-0006,P-001,P-005,co_member_initiative,3,2026-06-30,public,I-01,
+E-0007,P-001,P-008,co_attended_session,2,2026-01-21,members,N-01,
+E-0008,P-001,P-008,worked_with,3,2025-11-20,public,,Co-chaired the 2025 Summit plenary on transition finance.
+E-0009,P-001,P-014,co_attended_session,2,2026-01-21,members,N-01,
+E-0010,P-001,P-014,co_member_initiative,3,2026-06-30,public,I-01,
+E-0011,P-001,P-016,board_peer,3,2026-03-12,members,,
+E-0012,P-001,P-017,co_attended_session,2,2026-01-21,members,N-01,
+E-0013,P-001,P-019,co_attended_session,2,2026-01-21,members,N-01,
+E-0014,P-001,P-034,worked_with,2,2025-11-20,public,,
+E-0015,P-001,P-040,co_member_initiative,3,2026-06-30,public,I-01,
+E-0016,P-001,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0017,P-001,P-049,co_member_initiative,3,2026-06-30,public,I-01,
+E-0018,P-002,P-026,co_member_initiative,3,2026-06-30,members,I-04,
+E-0019,P-002,P-039,co_member_initiative,3,2026-06-30,members,I-04,
+E-0020,P-002,P-039,colleague,5,2026-07-15,members,,
+E-0021,P-002,P-047,co_member_initiative,3,2026-06-30,members,I-04,
+E-0022,P-002,P-047,colleague,5,2026-10-06,members,,
+E-0023,P-002,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0024,P-003,P-011,co_member_initiative,3,2026-06-30,public,I-03,
+E-0025,P-003,P-016,co_attended_session,2,2026-05-14,members,N-02,
+E-0026,P-003,P-016,co_member_initiative,3,2026-06-30,public,I-03,
+E-0027,P-003,P-021,co_member_initiative,3,2026-06-30,public,I-03,
+E-0028,P-003,P-022,co_attended_session,2,2026-05-14,members,N-02,
+E-0029,P-003,P-022,colleague,5,2022-03-10,members,,
+E-0030,P-003,P-032,co_attended_session,2,2026-05-14,members,N-02,
+E-0031,P-003,P-032,co_member_initiative,3,2026-06-30,public,I-03,
+E-0032,P-003,P-038,co_attended_session,2,2026-05-14,members,N-02,
+E-0033,P-003,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0034,P-004,P-005,co_attended_session,2,2026-01-21,members,N-01,
+E-0035,P-004,P-005,co_member_initiative,3,2026-06-30,public,I-01,
+E-0036,P-004,P-008,co_attended_session,2,2026-01-21,members,N-01,
+E-0037,P-004,P-012,co_attended_session,2,2026-09-02,restricted,N-03,
+E-0038,P-004,P-012,negotiation,5,2026-09-02,restricted,N-03,Negotiating hydrogen offtake JV — strictly confidential.
+E-0039,P-004,P-014,co_attended_session,2,2026-01-21,members,N-01,
+E-0040,P-004,P-014,co_member_initiative,3,2026-06-30,public,I-01,
+E-0041,P-004,P-017,co_attended_session,2,2026-01-21,members,N-01,
+E-0042,P-004,P-019,co_attended_session,2,2026-01-21,members,N-01,
+E-0043,P-004,P-020,colleague,4,2026-07-07,members,,
+E-0044,P-004,P-028,co_attended_session,2,2026-09-02,restricted,N-03,
+E-0045,P-004,P-035,co_attended_session,2,2026-09-02,restricted,N-03,
+E-0046,P-004,P-040,co_member_initiative,3,2026-06-30,public,I-01,
+E-0047,P-004,P-040,colleague,5,2026-08-28,members,,
+E-0048,P-004,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0049,P-004,P-049,co_member_initiative,3,2026-06-30,public,I-01,
+E-0050,P-005,P-008,co_attended_session,2,2026-01-21,members,N-01,
+E-0051,P-005,P-014,co_attended_session,2,2026-01-21,members,N-01,
+E-0052,P-005,P-014,co_member_initiative,3,2026-06-30,public,I-01,
+E-0053,P-005,P-017,co_attended_session,2,2026-01-21,members,N-01,
+E-0054,P-005,P-019,co_attended_session,2,2026-01-21,members,N-01,
+E-0055,P-005,P-019,colleague,5,2026-10-15,members,,
+E-0056,P-005,P-040,co_member_initiative,3,2026-06-30,public,I-01,
+E-0057,P-005,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0058,P-005,P-049,co_member_initiative,3,2026-06-30,public,I-01,
+E-0059,P-005,P-049,worked_with,3,2026-06-30,members,,Discussed hydrogen imports from Australia to Northern Europe and Japan.
+E-0060,P-006,P-009,co_attended_session,2,2026-03-11,members,N-04,
+E-0061,P-006,P-009,co_member_initiative,3,2026-06-30,members,I-05,
+E-0062,P-006,P-020,co_attended_session,2,2026-03-11,members,N-04,
+E-0063,P-006,P-020,co_member_initiative,3,2026-06-30,members,I-05,
+E-0064,P-006,P-023,colleague,5,2026-09-03,members,,
+E-0065,P-006,P-036,co_member_initiative,3,2026-06-30,members,I-05,
+E-0066,P-006,P-036,colleague,5,2026-04-09,members,,
+E-0067,P-006,P-037,co_attended_session,2,2026-03-11,members,N-04,
+E-0068,P-006,P-037,co_member_initiative,3,2026-06-30,members,I-05,
+E-0069,P-006,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0070,P-007,P-011,co_member_initiative,3,2026-06-30,members,I-10,
+E-0071,P-007,P-015,co_member_initiative,3,2026-06-30,members,I-06,
+E-0072,P-007,P-027,worked_with,3,2026-02-10,members,,
+E-0073,P-007,P-031,co_member_initiative,3,2026-06-30,members,I-06,
+E-0074,P-007,P-038,co_member_initiative,3,2026-06-30,members,I-10,
+E-0075,P-007,P-047,worked_with,2,2026-05-11,members,,
+E-0076,P-007,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0077,P-008,P-013,co_member_initiative,3,2026-06-30,members,I-02,
+E-0078,P-008,P-014,co_attended_session,2,2026-01-21,members,N-01,
+E-0079,P-008,P-017,co_attended_session,2,2026-01-21,members,N-01,
+E-0080,P-008,P-018,co_attended_session,2,2026-04-22,public,N-06,
+E-0081,P-008,P-019,co_attended_session,2,2026-01-21,members,N-01,
+E-0082,P-008,P-024,co_member_initiative,3,2026-06-30,members,I-02,
+E-0083,P-008,P-029,co_attended_session,2,2026-04-22,public,N-06,
+E-0084,P-008,P-034,co_member_initiative,3,2026-06-30,members,I-02,
+E-0085,P-008,P-045,co_attended_session,2,2026-04-22,public,N-06,
+E-0086,P-008,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0087,P-009,P-020,co_attended_session,2,2026-03-11,members,N-04,
+E-0088,P-009,P-020,co_member_initiative,3,2026-06-30,members,I-05,
+E-0089,P-009,P-036,co_member_initiative,3,2026-06-30,members,I-05,
+E-0090,P-009,P-037,co_attended_session,2,2026-03-11,members,N-04,
+E-0091,P-009,P-037,co_member_initiative,3,2026-06-30,members,I-05,
+E-0092,P-009,P-037,colleague,5,2026-08-26,members,,
+E-0093,P-009,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0094,P-010,P-025,co_attended_session,2,2026-07-08,staff,N-07,
+E-0095,P-010,P-033,co_attended_session,2,2026-07-08,staff,N-07,
+E-0096,P-010,P-033,co_member_initiative,3,2026-06-30,restricted,I-07,
+E-0097,P-010,P-035,co_member_initiative,3,2026-06-30,restricted,I-07,
+E-0098,P-010,P-043,co_attended_session,2,2026-07-08,staff,N-07,
+E-0099,P-010,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0100,P-010,P-049,co_attended_session,2,2026-07-08,staff,N-07,
+E-0101,P-010,P-049,colleague,4,2026-06-30,members,,
+E-0102,P-011,P-016,co_member_initiative,3,2026-06-30,public,I-03,
+E-0103,P-011,P-021,co_member_initiative,3,2026-06-30,public,I-03,
+E-0104,P-011,P-032,co_member_initiative,3,2026-06-30,public,I-03,
+E-0105,P-011,P-038,co_member_initiative,3,2026-06-30,members,I-10,
+E-0106,P-011,P-038,colleague,5,2026-09-12,members,,
+E-0107,P-011,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0108,P-012,P-028,co_attended_session,2,2026-09-02,restricted,N-03,
+E-0109,P-012,P-028,colleague,5,2026-09-27,restricted,,
+E-0110,P-012,P-035,co_attended_session,2,2026-09-02,restricted,N-03,
+E-0111,P-012,P-035,colleague,5,2026-10-14,restricted,,
+E-0112,P-012,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0113,P-013,P-021,co_attended_session,2,2026-02-25,members,N-08,
+E-0114,P-013,P-021,co_member_initiative,3,2026-06-30,members,I-09,
+E-0115,P-013,P-024,co_member_initiative,3,2026-06-30,members,I-02,
+E-0116,P-013,P-024,colleague,5,2026-10-11,members,,
+E-0117,P-013,P-031,co_attended_session,2,2026-02-25,members,N-08,
+E-0118,P-013,P-031,co_member_initiative,3,2026-06-30,members,I-09,
+E-0119,P-013,P-034,co_member_initiative,3,2026-06-30,members,I-02,
+E-0120,P-013,P-044,co_attended_session,2,2026-02-25,members,N-08,
+E-0121,P-013,P-044,co_member_initiative,3,2026-06-30,members,I-09,
+E-0122,P-013,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0123,P-014,P-017,co_attended_session,2,2026-01-21,members,N-01,
+E-0124,P-014,P-019,co_attended_session,2,2026-01-21,members,N-01,
+E-0125,P-014,P-040,co_member_initiative,3,2026-06-30,public,I-01,
+E-0126,P-014,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0127,P-014,P-049,co_member_initiative,3,2026-06-30,public,I-01,
+E-0128,P-015,P-023,co_attended_session,2,2026-06-10,members,N-05,
+E-0129,P-015,P-023,introduced_by_staff,3,2025-10-14,members,,Introduced by the Secretariat in 2025; met twice since.
+E-0130,P-015,P-027,co_attended_session,2,2026-06-10,members,N-05,
+E-0131,P-015,P-031,co_attended_session,2,2026-06-10,members,N-05,
+E-0132,P-015,P-031,co_member_initiative,3,2026-06-30,members,I-06,
+E-0133,P-015,P-031,colleague,5,2026-08-12,members,,
+E-0134,P-015,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0135,P-015,P-050,co_attended_session,2,2026-06-10,members,N-05,
+E-0136,P-016,P-021,co_member_initiative,3,2026-06-30,public,I-03,
+E-0137,P-016,P-022,co_attended_session,2,2026-05-14,members,N-02,
+E-0138,P-016,P-026,colleague,5,2025-12-01,members,,
+E-0139,P-016,P-032,co_attended_session,2,2026-05-14,members,N-02,
+E-0140,P-016,P-032,co_member_initiative,3,2026-06-30,public,I-03,
+E-0141,P-016,P-038,co_attended_session,2,2026-05-14,members,N-02,
+E-0142,P-016,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0143,P-017,P-019,co_attended_session,2,2026-01-21,members,N-01,
+E-0144,P-017,P-030,worked_with,4,2026-06-01,members,,Co-authors on solid-oxide electrolysis.
+E-0145,P-017,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0146,P-018,P-029,co_attended_session,2,2026-04-22,public,N-06,
+E-0147,P-018,P-029,co_member_initiative,3,2026-06-30,public,I-08,
+E-0148,P-018,P-045,co_attended_session,2,2026-04-22,public,N-06,
+E-0149,P-018,P-045,co_member_initiative,3,2026-06-30,public,I-08,
+E-0150,P-018,P-045,worked_with,4,2026-09-24,members,,
+E-0151,P-018,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0152,P-019,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0153,P-020,P-036,co_member_initiative,3,2026-06-30,members,I-05,
+E-0154,P-020,P-037,co_attended_session,2,2026-03-11,members,N-04,
+E-0155,P-020,P-037,co_member_initiative,3,2026-06-30,members,I-05,
+E-0156,P-020,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0157,P-021,P-031,co_attended_session,2,2026-02-25,members,N-08,
+E-0158,P-021,P-031,co_member_initiative,3,2026-06-30,members,I-09,
+E-0159,P-021,P-032,co_member_initiative,3,2026-06-30,public,I-03,
+E-0160,P-021,P-032,colleague,5,2026-09-21,members,,
+E-0161,P-021,P-044,co_attended_session,2,2026-02-25,members,N-08,
+E-0162,P-021,P-044,co_member_initiative,3,2026-06-30,members,I-09,
+E-0163,P-021,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0164,P-022,P-032,co_attended_session,2,2026-05-14,members,N-02,
+E-0165,P-022,P-038,co_attended_session,2,2026-05-14,members,N-02,
+E-0166,P-022,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0167,P-023,P-027,co_attended_session,2,2026-06-10,members,N-05,
+E-0168,P-023,P-027,co_member_initiative,3,2026-06-30,staff,I-12,
+E-0169,P-023,P-031,co_attended_session,2,2026-06-10,members,N-05,
+E-0170,P-023,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0171,P-023,P-050,co_attended_session,2,2026-06-10,members,N-05,
+E-0172,P-023,P-050,co_member_initiative,3,2026-06-30,staff,I-12,
+E-0173,P-024,P-034,co_member_initiative,3,2026-06-30,members,I-02,
+E-0174,P-024,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0175,P-025,P-033,co_attended_session,2,2026-07-08,staff,N-07,
+E-0176,P-025,P-043,co_attended_session,2,2026-07-08,staff,N-07,
+E-0177,P-025,P-043,co_member_initiative,3,2026-06-30,members,I-11,
+E-0178,P-025,P-046,co_member_initiative,3,2026-06-30,members,I-11,
+E-0179,P-025,P-046,colleague,4,2025-08-08,members,,
+E-0180,P-025,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0181,P-025,P-049,co_attended_session,2,2026-07-08,staff,N-07,
+E-0182,P-026,P-039,co_member_initiative,3,2026-06-30,members,I-04,
+E-0183,P-026,P-047,co_member_initiative,3,2026-06-30,members,I-04,
+E-0184,P-026,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0185,P-027,P-031,co_attended_session,2,2026-06-10,members,N-05,
+E-0186,P-027,P-042,introduced_by_staff,2,2026-10-01,members,,
+E-0187,P-027,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0188,P-027,P-050,co_attended_session,2,2026-06-10,members,N-05,
+E-0189,P-027,P-050,co_member_initiative,3,2026-06-30,staff,I-12,
+E-0190,P-027,P-050,worked_with,2,2023-01-12,members,,
+E-0191,P-028,P-035,co_attended_session,2,2026-09-02,restricted,N-03,
+E-0192,P-028,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0193,P-029,P-045,co_attended_session,2,2026-04-22,public,N-06,
+E-0194,P-029,P-045,co_member_initiative,3,2026-06-30,public,I-08,
+E-0195,P-029,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0196,P-030,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0197,P-031,P-044,co_attended_session,2,2026-02-25,members,N-08,
+E-0198,P-031,P-044,co_member_initiative,3,2026-06-30,members,I-09,
+E-0199,P-031,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0200,P-031,P-050,co_attended_session,2,2026-06-10,members,N-05,
+E-0201,P-032,P-038,co_attended_session,2,2026-05-14,members,N-02,
+E-0202,P-032,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0203,P-033,P-035,co_member_initiative,3,2026-06-30,restricted,I-07,
+E-0204,P-033,P-043,co_attended_session,2,2026-07-08,staff,N-07,
+E-0205,P-033,P-043,colleague,5,2026-07-30,members,,
+E-0206,P-033,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0207,P-033,P-049,co_attended_session,2,2026-07-08,staff,N-07,
+E-0208,P-034,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0209,P-035,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0210,P-036,P-037,co_member_initiative,3,2026-06-30,members,I-05,
+E-0211,P-036,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0212,P-037,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0213,P-038,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0214,P-039,P-047,co_member_initiative,3,2026-06-30,members,I-04,
+E-0215,P-039,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0216,P-040,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0217,P-040,P-049,co_member_initiative,3,2026-06-30,public,I-01,
+E-0218,P-041,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0219,P-042,P-045,colleague,5,2026-10-09,members,,
+E-0220,P-042,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0221,P-043,P-046,co_member_initiative,3,2026-06-30,members,I-11,
+E-0222,P-043,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0223,P-043,P-049,co_attended_session,2,2026-07-08,staff,N-07,
+E-0224,P-044,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0225,P-045,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0226,P-046,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0227,P-047,P-048,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0228,P-048,P-049,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.
+E-0229,P-048,P-050,staff_account_contact,3,2026-11-02,staff,,Secretariat relationship owner.

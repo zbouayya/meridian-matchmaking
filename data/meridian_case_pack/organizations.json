@@ -1,0 +1,330 @@
+[
+ {
+  "id": "O-01",
+  "name": "Nordvolt Energy",
+  "type": "company",
+  "country": "Sweden",
+  "region": "Europe",
+  "themes": [
+   "green-hydrogen",
+   "critical-minerals"
+  ],
+  "visibility": "members",
+  "membership_tier": "Partner"
+ },
+ {
+  "id": "O-02",
+  "name": "Alpenbank Group",
+  "type": "bank",
+  "country": "Switzerland",
+  "region": "Europe",
+  "themes": [
+   "climate-finance",
+   "cybersecurity",
+   "financial-inclusion"
+  ],
+  "visibility": "members",
+  "membership_tier": "Partner"
+ },
+ {
+  "id": "O-03",
+  "name": "Sahara Solar Holdings",
+  "type": "company",
+  "country": "Morocco",
+  "region": "MENA",
+  "themes": [
+   "green-hydrogen",
+   "water",
+   "climate-finance"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-04",
+  "name": "Lumière Institute of Technology",
+  "type": "academic",
+  "country": "France",
+  "region": "Europe",
+  "themes": [
+   "green-hydrogen"
+  ],
+  "visibility": "public",
+  "membership_tier": "Fellow"
+ },
+ {
+  "id": "O-05",
+  "name": "Pacific Ocean Trust",
+  "type": "ngo",
+  "country": "Fiji",
+  "region": "Asia-Pacific",
+  "themes": [
+   "ocean",
+   "climate-finance"
+  ],
+  "visibility": "public",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-06",
+  "name": "East Africa Power Pool Secretariat",
+  "type": "intergovernmental",
+  "country": "Kenya",
+  "region": "Africa",
+  "themes": [
+   "green-hydrogen",
+   "climate-finance"
+  ],
+  "visibility": "public",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-07",
+  "name": "Andes AgriTech",
+  "type": "company",
+  "country": "Peru",
+  "region": "Americas",
+  "themes": [
+   "food-security",
+   "water",
+   "financial-inclusion"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-08",
+  "name": "Gulf Sovereign Capital",
+  "type": "sovereign-fund",
+  "country": "UAE",
+  "region": "MENA",
+  "themes": [
+   "climate-finance",
+   "green-hydrogen",
+   "critical-minerals"
+  ],
+  "visibility": "members",
+  "membership_tier": "Partner"
+ },
+ {
+  "id": "O-09",
+  "name": "Singapore Digital Trust Lab",
+  "type": "academic",
+  "country": "Singapore",
+  "region": "Asia-Pacific",
+  "themes": [
+   "ai-governance",
+   "cybersecurity"
+  ],
+  "visibility": "public",
+  "membership_tier": "Fellow"
+ },
+ {
+  "id": "O-10",
+  "name": "CyberShield Alliance",
+  "type": "ngo",
+  "country": "Estonia",
+  "region": "Europe",
+  "themes": [
+   "cybersecurity",
+   "ai-governance"
+  ],
+  "visibility": "public",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-11",
+  "name": "Global Vaccine Access Fund",
+  "type": "multilateral",
+  "country": "Switzerland",
+  "region": "Europe",
+  "themes": [
+   "global-health",
+   "financial-inclusion"
+  ],
+  "visibility": "public",
+  "membership_tier": "Partner"
+ },
+ {
+  "id": "O-12",
+  "name": "Ubuntu Microfinance",
+  "type": "company",
+  "country": "South Africa",
+  "region": "Africa",
+  "themes": [
+   "financial-inclusion",
+   "future-of-work"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-13",
+  "name": "Mekong Water Partnership",
+  "type": "ngo",
+  "country": "Vietnam",
+  "region": "Asia-Pacific",
+  "themes": [
+   "water",
+   "food-security",
+   "ocean"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-14",
+  "name": "Kestrel Minerals",
+  "type": "company",
+  "country": "Australia",
+  "region": "Asia-Pacific",
+  "themes": [
+   "critical-minerals",
+   "green-hydrogen",
+   "climate-finance"
+  ],
+  "visibility": "members",
+  "membership_tier": "Partner"
+ },
+ {
+  "id": "O-15",
+  "name": "FutureSkills Foundation",
+  "type": "ngo",
+  "country": "India",
+  "region": "Asia-Pacific",
+  "themes": [
+   "future-of-work",
+   "ai-governance"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-16",
+  "name": "Atlas Logistics",
+  "type": "company",
+  "country": "Netherlands",
+  "region": "Europe",
+  "themes": [
+   "supply-chains",
+   "green-hydrogen"
+  ],
+  "visibility": "public",
+  "membership_tier": "Partner"
+ },
+ {
+  "id": "O-17",
+  "name": "Banco Solidario de las Américas",
+  "type": "bank",
+  "country": "Mexico",
+  "region": "Americas",
+  "themes": [
+   "financial-inclusion",
+   "cybersecurity"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-18",
+  "name": "Helix Health AI",
+  "type": "company",
+  "country": "USA",
+  "region": "Americas",
+  "themes": [
+   "global-health",
+   "ai-governance"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-19",
+  "name": "European Climate Finance Institute",
+  "type": "academic",
+  "country": "Germany",
+  "region": "Europe",
+  "themes": [
+   "climate-finance",
+   "supply-chains"
+  ],
+  "visibility": "public",
+  "membership_tier": "Fellow"
+ },
+ {
+  "id": "O-20",
+  "name": "Meridian Forum Secretariat",
+  "type": "secretariat",
+  "country": "Switzerland",
+  "region": "Europe",
+  "themes": [],
+  "visibility": "staff",
+  "membership_tier": "Internal"
+ },
+ {
+  "id": "O-21",
+  "name": "FoodBridge Africa",
+  "type": "ngo",
+  "country": "Kenya",
+  "region": "Africa",
+  "themes": [
+   "food-security",
+   "financial-inclusion"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-22",
+  "name": "Africa Critical Minerals Alliance",
+  "type": "ngo",
+  "country": "Ghana",
+  "region": "Africa",
+  "themes": [
+   "critical-minerals",
+   "supply-chains"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-23",
+  "name": "Northstar Impact Partners",
+  "type": "fund",
+  "country": "USA",
+  "region": "Americas",
+  "themes": [
+   "climate-finance",
+   "ocean",
+   "food-security",
+   "global-health"
+  ],
+  "visibility": "members",
+  "membership_tier": "Partner"
+ },
+ {
+  "id": "O-24",
+  "name": "SecureGrid Labs",
+  "type": "company",
+  "country": "Austria",
+  "region": "Europe",
+  "themes": [
+   "cybersecurity"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ },
+ {
+  "id": "O-25",
+  "name": "Nile AgriFinance",
+  "type": "company",
+  "country": "Egypt",
+  "region": "MENA",
+  "themes": [
+   "food-security",
+   "financial-inclusion"
+  ],
+  "visibility": "members",
+  "membership_tier": "Member"
+ }
+]

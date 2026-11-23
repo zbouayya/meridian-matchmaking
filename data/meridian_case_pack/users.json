@@ -1,0 +1,47 @@
+[
+ {
+  "user_id": "U-01",
+  "name": "Sofia Meyer",
+  "role": "relationship_manager",
+  "clearance": "restricted",
+  "person_id": null,
+  "org_id": "O-20",
+  "description": "Senior Relationship Manager in the Managing Director's office. Sees everything, including restricted principals and confidential notes."
+ },
+ {
+  "user_id": "U-02",
+  "name": "Karim Haddad",
+  "role": "community_lead",
+  "clearance": "staff",
+  "person_id": null,
+  "org_id": "O-20",
+  "description": "Community Lead, Energy Council. Sees public, member and staff records; never restricted ones."
+ },
+ {
+  "user_id": "U-03",
+  "name": "Anders Lindqvist",
+  "role": "member",
+  "clearance": "members",
+  "person_id": "P-005",
+  "org_id": "O-01",
+  "description": "Member CEO using the self-service matchmaking assistant in the member portal."
+ },
+ {
+  "user_id": "U-04",
+  "name": "Grace Achieng",
+  "role": "member",
+  "clearance": "members",
+  "person_id": "P-027",
+  "org_id": "O-21",
+  "description": "Member, Executive Director of an NGO, using the member portal."
+ },
+ {
+  "user_id": "U-05",
+  "name": "Tom Reilly",
+  "role": "guest",
+  "clearance": "public",
+  "person_id": null,
+  "org_id": null,
+  "description": "Accredited journalist using the Summit guest app. Public records only."
+ }
+]

@@ -1,0 +1,32 @@
+# Optional: `uvx pre-commit install` runs these before each commit. CI is the gate; this
+# only shortens the loop.
+#
+# data/ is excluded everywhere: the case pack is stored byte for byte, and a hook that
+# "fixes" a trailing space or a final newline in it would break the integrity check.
+exclude: ^data/
+
+repos:
+  # ruff comes from the project's own lockfile, so the hook and CI cannot disagree.
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run --frozen ruff check --fix
+        language: system
+        types: [python]
+      - id: ruff-format
+        name: ruff format
+        entry: uv run --frozen ruff format
+        language: system
+        types: [python]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: detect-private-key

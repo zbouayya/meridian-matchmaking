@@ -1,0 +1,7 @@
+# Our own text files: LF everywhere, whatever the platform that checks them out.
+* text=auto eol=lf
+
+# The case pack is stored byte for byte. It mixes LF and CRLF files (relationships.csv is
+# CRLF), and the integrity check compares SHA-256 digests against the original zip — so git
+# must never normalise a line ending in here.
+data/meridian_case_pack/** -text

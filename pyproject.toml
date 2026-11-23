@@ -1,0 +1,50 @@
+[project]
+name = "meridian-matchmaking"
+version = "0.1.0"
+description = "Cross-network matchmaking agent for the Meridian Forum take-home case."
+requires-python = ">=3.12"
+# Empty on purpose at scaffold time: the command that ships today is standard library only.
+# Runtime dependencies are added with `uv add <package>`, which updates uv.lock in the same step.
+dependencies = []
+
+[project.scripts]
+matchmaker = "matchmaker.cli:main"
+
+# `dev` is uv's default group: `uv sync` installs it, the image build leaves it out
+# (`uv sync --no-dev` in the Dockerfile), so none of this reaches the container.
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/matchmaker"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# data/ holds the case pack exactly as it was received, scorer included. It is not our code:
+# linting or reformatting it would change the bytes the integrity check protects.
+extend-exclude = ["data", ".claude"]
+
+[tool.ruff.lint]
+# E/F: errors · I: import order · B: likely bugs · UP: modern syntax · SIM: simplifications
+# S: security (bandit rules) — the one family that matters most for a tool handling access rights.
+select = ["E", "F", "I", "B", "UP", "SIM", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert is how pytest works
+
+[tool.mypy]
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

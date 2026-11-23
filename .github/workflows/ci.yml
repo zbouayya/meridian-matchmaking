@@ -1,0 +1,126 @@
+# Lint, type-check, test, then build the image and prove it runs.
+#
+# Continuous integration only. There is deliberately no deploy or publish job: this is a
+# prototype, and the last thing CI proves is that the image built from a clean checkout runs
+# offline, as a non-root user, with no credential baked in.
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Same version as the Dockerfile's builder stage. Bump both together.
+  UV_VERSION: "0.9.26"
+  IMAGE: meridian-matchmaking:ci
+  BASE_IMAGE: python:3.12-slim-bookworm
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Pinned exactly: astral-sh/setup-uv no longer publishes floating major tags.
+      - uses: astral-sh/setup-uv@v10.0.1
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+
+      - name: Lockfile matches pyproject.toml
+        run: uv lock --check
+
+      - name: Install (frozen)
+        run: uv sync --frozen
+
+      - name: Lint
+        run: uv run --frozen ruff check .
+
+      - name: Format
+        run: uv run --frozen ruff format --check .
+
+      - name: Types
+        run: uv run --frozen mypy
+
+      - name: Tests
+        # Offline by construction: no API key, no network. Anything that needs a model is
+        # tested against a fake, so this job can gate every push for free.
+        run: uv run --frozen pytest -q
+
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Build
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          load: true
+          tags: ${{ env.IMAGE }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Runs as a non-root user
+        run: |
+          set -euo pipefail
+          uid=$(docker run --rm --entrypoint id "$IMAGE" -u)
+          test "$uid" != "0" || { echo "::error::the image runs as root"; exit 1; }
+          echo "runs as uid $uid"
+
+      - name: No secret file in the image
+        # Catches the one mistake with consequences: a COPY that widens, or a .dockerignore
+        # that stops matching, putting a local .env with an API key into a layer.
+        run: |
+          set -euo pipefail
+          found=$(docker run --rm --entrypoint sh "$IMAGE" -c \
+            'find /app -path /app/.venv -prune -o \
+               \( -name ".env" -o -name ".env.*" -o -name "*.key" -o -name "*.pem" \) -print')
+          if [ -n "$found" ]; then
+            echo "::error::secret-shaped file in the image:"; echo "$found"; exit 1
+          fi
+          echo "clean: no secret-shaped file under /app"
+
+      - name: No credential-shaped variable carries a value
+        # The image carries configuration, never credentials. Only what our Dockerfile adds
+        # is checked: the base image ships GPG_KEY, a public fingerprint that is not ours.
+        run: |
+          set -euo pipefail
+          # buildx resolves the base into its own cache, not the image store, so it must be
+          # pulled explicitly — and an unreadable baseline fails the job rather than
+          # silently comparing against nothing.
+          docker pull -q "$BASE_IMAGE"
+          inspect() { docker inspect -f '{{range .Config.Env}}{{println .}}{{end}}' "$1" | sort; }
+          base=$(inspect "$BASE_IMAGE" || true)
+          if [ -z "$base" ]; then
+            echo "::error::cannot read the base image environment — refusing to guess"; exit 1
+          fi
+          baked=$(comm -13 <(echo "$base") <(inspect "$IMAGE") \
+            | grep -iE '^[A-Z_]*(SECRET|PASSWORD|TOKEN|CREDENTIAL|_KEY|APIKEY)[A-Z_]*=.+' || true)
+          if [ -n "$baked" ]; then
+            echo "::error::a credential-shaped variable is baked into the image:"
+            echo "$baked" | sed 's/=.*/=<redacted>/'
+            exit 1
+          fi
+          echo "clean: no credential-shaped environment variable in the image"
+
+      - name: Run it
+        # The default command, with no network and a read-only root filesystem: the image
+        # is self-contained, and the pack inside it is the one that was received.
+        run: |
+          set -euo pipefail
+          docker run --rm "$IMAGE" --version
+          docker run --rm --network none --read-only "$IMAGE"

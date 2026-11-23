@@ -1,0 +1,174 @@
+{
+ "green-hydrogen": {
+  "labels": {
+   "en": "Green hydrogen",
+   "fr": "Hydrogène vert",
+   "es": "Hidrógeno verde"
+  },
+  "synonyms": [
+   "H2",
+   "electrolysis",
+   "électrolyse",
+   "electrolizadores",
+   "hydrogen corridors",
+   "ammonia"
+  ],
+  "community": "Energy Council"
+ },
+ "climate-finance": {
+  "labels": {
+   "en": "Climate finance",
+   "fr": "Finance climat",
+   "es": "Finanzas climáticas"
+  },
+  "synonyms": [
+   "green bonds",
+   "blended finance",
+   "transition finance",
+   "obligations vertes"
+  ],
+  "community": "Finance Council"
+ },
+ "ai-governance": {
+  "labels": {
+   "en": "AI governance",
+   "fr": "Gouvernance de l'IA",
+   "es": "Gobernanza de la IA"
+  },
+  "synonyms": [
+   "responsible AI",
+   "AI policy",
+   "AI safety",
+   "AI regulation",
+   "IA responsable"
+  ],
+  "community": "Tech & Society Council"
+ },
+ "cybersecurity": {
+  "labels": {
+   "en": "Cybersecurity",
+   "fr": "Cybersécurité",
+   "es": "Ciberseguridad"
+  },
+  "synonyms": [
+   "cyber resilience",
+   "cyber risk",
+   "critical infrastructure security"
+  ],
+  "community": "Tech & Society Council"
+ },
+ "global-health": {
+  "labels": {
+   "en": "Global health",
+   "fr": "Santé mondiale",
+   "es": "Salud global"
+  },
+  "synonyms": [
+   "pandemic preparedness",
+   "vaccines",
+   "vaccins",
+   "health systems"
+  ],
+  "community": "Health Council"
+ },
+ "food-security": {
+  "labels": {
+   "en": "Food security",
+   "fr": "Sécurité alimentaire",
+   "es": "Seguridad alimentaria"
+  },
+  "synonyms": [
+   "smallholder farmers",
+   "agritech",
+   "pequeños productores",
+   "agriculture"
+  ],
+  "community": "Food & Water Council"
+ },
+ "water": {
+  "labels": {
+   "en": "Water",
+   "fr": "Eau",
+   "es": "Agua"
+  },
+  "synonyms": [
+   "water scarcity",
+   "desalination",
+   "dessalement",
+   "irrigation",
+   "river basins"
+  ],
+  "community": "Food & Water Council"
+ },
+ "critical-minerals": {
+  "labels": {
+   "en": "Critical minerals",
+   "fr": "Minerais critiques",
+   "es": "Minerales críticos"
+  },
+  "synonyms": [
+   "lithium",
+   "cobalt",
+   "battery supply chain",
+   "mining"
+  ],
+  "community": "Energy Council"
+ },
+ "financial-inclusion": {
+  "labels": {
+   "en": "Financial inclusion",
+   "fr": "Inclusion financière",
+   "es": "Inclusión financiera"
+  },
+  "synonyms": [
+   "microfinance",
+   "microfinanzas",
+   "digital credit",
+   "crédito digital",
+   "mobile money"
+  ],
+  "community": "Finance Council"
+ },
+ "ocean": {
+  "labels": {
+   "en": "Ocean & blue economy",
+   "fr": "Océan et économie bleue",
+   "es": "Océano y economía azul"
+  },
+  "synonyms": [
+   "blue bonds",
+   "marine conservation",
+   "fisheries",
+   "ocean conservation"
+  ],
+  "community": "Food & Water Council"
+ },
+ "future-of-work": {
+  "labels": {
+   "en": "Future of work & skills",
+   "fr": "Avenir du travail",
+   "es": "Futuro del trabajo"
+  },
+  "synonyms": [
+   "reskilling",
+   "green jobs",
+   "skills",
+   "workforce"
+  ],
+  "community": "Tech & Society Council"
+ },
+ "supply-chains": {
+  "labels": {
+   "en": "Trade & supply chains",
+   "fr": "Commerce et chaînes d'approvisionnement",
+   "es": "Comercio y cadenas de suministro"
+  },
+  "synonyms": [
+   "logistics",
+   "trade policy",
+   "nearshoring",
+   "shipping"
+  ],
+  "community": "Energy Council"
+ }
+}

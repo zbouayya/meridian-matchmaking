@@ -1,0 +1,21 @@
+# Environment and caches
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+build/
+dist/
+
+# Secrets: API keys live in .env locally and are passed at run time, never committed
+.env
+.env.*
+!.env.example
+
+# Editor and assistant state
+.idea/
+.vscode/
+.claude/
+.DS_Store
