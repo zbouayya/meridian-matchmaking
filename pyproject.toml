@@ -5,7 +5,13 @@ description = "Cross-network matchmaking agent for the Meridian Forum take-home 
 requires-python = ">=3.12"
 # Empty on purpose at scaffold time: the command that ships today is standard library only.
 # Runtime dependencies are added with `uv add <package>`, which updates uv.lock in the same step.
-dependencies = []
+dependencies = [
+    "anthropic>=2.13.0",
+    "opentelemetry-exporter-otlp-proto-http>=1.45.2",
+    "opentelemetry-sdk>=1.45.2",
+    "pypdf>=7.1.1",
+    "python-dotenv>=1.2.4",
+]
 
 [project.scripts]
 matchmaker = "matchmaker.cli:main"
@@ -47,4 +53,7 @@ files = ["src", "tests"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra"
+addopts = "-ra --strict-markers"
+markers = [
+    "spec(*ids): the requirements of docs/SPECS.md that this test enforces",
+]

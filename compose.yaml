@@ -1,0 +1,67 @@
+# The reviewer's one command: the matchmaker, and Phoenix to look at its traces.
+#
+#   bash scripts/start.sh                            all of the below, with checks
+#   docker compose up --build                        the default command; the viewer stays up
+#   docker compose run --rm matchmaker check-llm     any other command, traced
+#   http://localhost:6006                            the traces
+#
+# Phoenix is a convenience, never a dependency. The matchmaker starts after it but does not
+# wait for it, and sends spans from a background thread with a short timeout: with the
+# viewer down, a run gives the same results in the same time.
+
+name: meridian-matchmaking
+
+services:
+  phoenix:
+    # Pinned, like every other version in this repository.
+    image: arizephoenix/phoenix:version-22.0.1
+    ports:
+      # The UI, and OTLP over HTTP. Bound to localhost: the viewer has no login.
+      - "127.0.0.1:6006:6006"
+    environment:
+      PHOENIX_WORKING_DIR: /mnt/data
+      # Phoenix starts with a login by default, and then refuses spans that carry no API
+      # key. Off here: a viewer on one machine, reachable from that machine only.
+      PHOENIX_ENABLE_AUTH: "false"
+      # Nothing but traces, and nothing leaves the machine: no usage telemetry, no built-in
+      # assistant (it can browse the web and run shell commands, and it would be reading
+      # traces that quote untrusted text from the pack), no MCP endpoint, no remote assets.
+      PHOENIX_TELEMETRY_ENABLED: "false"
+      PHOENIX_DISABLE_AGENT_ASSISTANT: "true"
+      PHOENIX_AGENTS_DISABLE_BASH: "true"
+      PHOENIX_ENABLE_MCP_SERVER: "false"
+      PHOENIX_ALLOW_EXTERNAL_RESOURCES: "false"
+    volumes:
+      # Traces survive `docker compose down`; `docker compose down --volumes` erases them.
+      - phoenix-data:/mnt/data
+    healthcheck:
+      # Lets `docker compose up --wait` return when the viewer answers, about 15 s after it
+      # starts. The image has no shell and no curl, so Python does the request.
+      test:
+        - CMD
+        - /usr/bin/python3.13
+        - -c
+        - "import urllib.request as u; u.urlopen('http://localhost:6006/healthz', timeout=2)"
+      interval: 2s
+      timeout: 3s
+      retries: 45
+
+  matchmaker:
+    build: .
+    image: meridian-matchmaking:local
+    depends_on:
+      - phoenix
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://phoenix:6006
+      # The SDK keeps prompts and responses out of spans unless this is set. It is set here,
+      # and only here, because a viewer without them explains little, the pack is synthetic
+      # and the store is a volume on this machine. With real member data this line is the
+      # first thing to remove: it copies whatever a user was allowed to see into the viewer.
+      ANTHROPIC_OPEN_TELEMETRY_TRACES_CONTENT_MODE: content
+    env_file:
+      # The API key, passed at run time and never baked into the image.
+      - path: .env
+        required: false
+
+volumes:
+  phoenix-data:
