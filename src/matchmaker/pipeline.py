@@ -20,11 +20,24 @@ from typing import Any
 
 import anthropic
 
-from matchmaker import access, dedupe, evidence, explain, keyword, ranking, sanitize, tracing
+from matchmaker import (
+    access,
+    dedupe,
+    evidence,
+    explain,
+    keyword,
+    ranking,
+    sanitize,
+    selection,
+    tracing,
+)
 from matchmaker.baseline import Request, note_for, read_requests
 from matchmaker.corpus import Corpus, load
 
 MAX_RESULTS = 5
+# What one request may spend waiting for models, all calls together: it keeps the whole
+# request under the 4-second target.
+TOTAL_MODEL_SECONDS = 3.6
 
 
 @dataclass(frozen=True)
@@ -79,11 +92,15 @@ def answer(
                     access.candidates(corpus, user, request.entity_types, day)
                 )
             filtered = time.perf_counter()
+            hidden = evidence.hidden_names(corpus, user)
+            if isinstance(rank, selection.ModelRanker):
+                rank.forbidden = hidden
             with tracing.step("matchmaker.rank", "RETRIEVER"):
                 matches = rank(query, pool)[:MAX_RESULTS]
+            # A ranker that asks a model says so, and what it cost.
+            retrieval = dict(getattr(rank, "last", None) or {"by": "rules"})
             ranked = time.perf_counter()
             with tracing.step("matchmaker.evidence", "TOOL"):
-                hidden = evidence.hidden_names(corpus, user)
                 found = [evidence.gather(corpus, user, m.record, day, hidden) for m in matches]
             gathered = time.perf_counter()
             items = [
@@ -95,7 +112,11 @@ def answer(
                 query,
                 items,
                 model=model,
-                budget_seconds=budget_seconds,
+                # Whatever the selection step used is taken off the explanation's time.
+                budget_seconds=min(
+                    budget_seconds,
+                    max(TOTAL_MODEL_SECONDS - (time.perf_counter() - started), 0.0),
+                ),
                 forbidden=hidden,
             )
             written = time.perf_counter()
@@ -117,6 +138,7 @@ def answer(
             span.set_attribute("matchmaker.results", len(results))
         stats |= {
             "candidates": len(pool),
+            "retrieval": retrieval,
             "results": len(results),
             "ms": {
                 "access_filter": _milliseconds(started, filtered),
@@ -137,7 +159,7 @@ def answer(
     latency_ms = _milliseconds(started, time.perf_counter())
     stats["latency_ms"] = latency_ms
     line = {"query_id": request.query_id, "latency_ms": latency_ms, "results": results}
-    note = note_for(request)
+    note = note_for(request, user is not None)
     if note:
         line["note"] = note
     return Answered(line, stats)

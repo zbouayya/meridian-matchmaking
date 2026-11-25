@@ -1,0 +1,26 @@
+id,name,country,regions,themes,visibility
+O-01,Nordvolt Energy,Sweden,Europe,green-hydrogen; critical-minerals,members
+O-02,Alpenbank Group,Switzerland,Europe,climate-finance; cybersecurity; financial-inclusion,members
+O-03,Sahara Solar Holdings,Morocco,MENA,green-hydrogen; water; climate-finance,members
+O-04,Lumière Institute of Technology,France,Europe,green-hydrogen,public
+O-05,Pacific Ocean Trust,Fiji,Asia-Pacific,ocean; climate-finance,public
+O-06,East Africa Power Pool Secretariat,Kenya,Africa,green-hydrogen; climate-finance,public
+O-07,Andes AgriTech,Peru,Americas,food-security; water; financial-inclusion,members
+O-08,Gulf Sovereign Capital,UAE,MENA,climate-finance; green-hydrogen; critical-minerals,members
+O-09,Singapore Digital Trust Lab,Singapore,Asia-Pacific,ai-governance; cybersecurity,public
+O-10,CyberShield Alliance,Estonia,Europe,cybersecurity; ai-governance,public
+O-11,Global Vaccine Access Fund,Switzerland,Europe,global-health; financial-inclusion,public
+O-12,Ubuntu Microfinance,South Africa,Africa,financial-inclusion; future-of-work,members
+O-13,Mekong Water Partnership,Vietnam,Asia-Pacific,water; food-security; ocean,members
+O-14,Kestrel Minerals,Australia,Asia-Pacific,critical-minerals; green-hydrogen; climate-finance,members
+O-15,FutureSkills Foundation,India,Asia-Pacific,future-of-work; ai-governance,members
+O-16,Atlas Logistics,Netherlands,Europe,supply-chains; green-hydrogen,public
+O-17,Banco Solidario de las Américas,Mexico,Americas,financial-inclusion; cybersecurity,members
+O-18,Helix Health AI,USA,Americas,global-health; ai-governance,members
+O-19,European Climate Finance Institute,Germany,Europe,climate-finance; supply-chains,public
+O-20,Meridian Forum Secretariat,Switzerland,Europe,,staff
+O-21,FoodBridge Africa,Kenya,Africa,food-security; financial-inclusion,members
+O-22,Africa Critical Minerals Alliance,Ghana,Africa,critical-minerals; supply-chains,members
+O-23,Northstar Impact Partners,USA,Americas,climate-finance; ocean; food-security; global-health,members
+O-24,SecureGrid Labs,Austria,Europe,cybersecurity,members
+O-25,Nile AgriFinance,Egypt,MENA,food-security; financial-inclusion,members

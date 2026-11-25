@@ -20,6 +20,12 @@ from matchmaker import access, dedupe, ranking, sanitize, taxonomy
 from matchmaker.corpus import KINDS, Corpus, load
 
 MAX_RESULTS = 5
+# Said when the request comes from a user id the pack does not know. Nothing is searched:
+# without a known user there is no clearance to apply.
+UNKNOWN_USER_NOTE = (
+    "The requester is not a known user, so nothing was searched. This is a data question "
+    "for a relationship manager."
+)
 # Said in the answer whenever the request does not name the kind of answer it wants.
 ALL_KINDS_NOTE = (
     "The request did not say which kind of answer was wanted, so people, organisations "
@@ -51,8 +57,10 @@ def read_requests(path: Path) -> list[Request]:
     return requests
 
 
-def note_for(request: Request) -> str | None:
+def note_for(request: Request, known_user: bool = True) -> str | None:
     """What the requester must be told about how the request was read, if anything."""
+    if not known_user:
+        return UNKNOWN_USER_NOTE
     return None if request.kinds_stated else ALL_KINDS_NOTE
 
 
@@ -86,7 +94,7 @@ def answer(
             )
     latency_ms = round((time.perf_counter() - started) * 1000, 2)
     line = {"query_id": request.query_id, "latency_ms": latency_ms, "results": results}
-    note = note_for(request)
+    note = note_for(request, user is not None)
     return line | {"note": note} if note else line
 
 

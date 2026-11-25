@@ -45,6 +45,15 @@
   | The system: both rules, then evidence, warm paths and model-written explanations | 0.893 | 0.980 | 0 | PASS |
   | For comparison: theme tags searched as plain words | 0.855 | 0.960 | 0 | PASS |
 
+  Selection by a model, measured against the rules (`make run` against `uv run matchmaker run --retrieval model`, same day, same model):
+
+  | Who selects the five | nDCG@5 | P@5 | Access violations | Median latency | Slowest | Model cost, 10 requests |
+  |---|---|---|---|---|---|---|
+  | Rules (the system above) | 0.893 | 0.980 | 0 | 2.0 s | 2.9 s | $0.0050 |
+  | A model shown the table of records the user may be offered | 0.906 | 0.960 | 0 | 2.6 s | 3.6 s | $0.0122 |
+
+  Per request, the model's selection is better on Q01, Q02, Q06 and Q09, worse on Q04 and Q07, and equal on the other four. One run; the model's choice is not reproducible from one run to the next.
+
   In every row, hidden text is removed from the records, duplicate person records are merged, and organisations, which have no descriptive text, are searched by their theme tags. The system's row has the same ranking as the row above it: the model only writes the explanations.
 
 - **What each component adds over it:** `TODO`

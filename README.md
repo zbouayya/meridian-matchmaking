@@ -67,8 +67,7 @@ Today the default command is `check-pack`: it verifies that the data pack in the
 will take its place as the default.
 
 The matchmaker answers the 10 public requests and is scored with the scorer that came with
-the pack. It needs an API key for the explanations (see Models and secrets); without one it
-still answers, with explanations written by rule:
+the pack:
 
 ```bash
 make run
@@ -78,17 +77,55 @@ It writes `results/results.jsonl`, plus `run_stats.jsonl` (time, tokens and cost
 request) and `traces.jsonl` (every step) beside it. For another file of requests:
 `uv run matchmaker run --queries <file> --out <file>`.
 
-The rule-based baselines — no model, no API key:
+## Two retrieval modes
 
-```bash
-make baseline
-```
+The matchmaker can choose its five matches in two ways. **Keywords are the default**, and
+`results/results.jsonl` is produced that way.
 
-That one writes `results/baseline_keyword.jsonl` (plain keyword search) and
-`results/baseline_rules.jsonl` (the same, widened with the taxonomy's synonyms and re-ranked
-by theme). Every request goes through the access filter (`src/matchmaker/access.py`) before
-anything is searched. What we assumed along the way is in
-[`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md).
+| | Keywords (default) | Model |
+|---|---|---|
+| Command | `make run`, or `uv run matchmaker run` | `uv run matchmaker run --retrieval model` |
+| Who chooses the five | Code: keyword search, widened with the taxonomy's synonyms in three languages, then re-ranked by theme | Claude Haiku, shown a table of the records this user may be offered |
+| Model calls per request | 1, to write the explanations | 2: the selection, then the explanations |
+| Same result on every run | Yes | No |
+| nDCG@5 / P@5, 10 public requests | 0.893 / 0.980 | 0.906 / 0.960 (one run) |
+| Median / slowest request | 2.0 s / 2.9 s | 2.6 s / 3.6 s |
+| Model cost, 10 requests | $0.0050 | $0.0122 |
+| Results file | `results/results.jsonl` | `results/results_model.jsonl` |
+
+Both modes share everything else:
+
+- **Before the selection:** the access filter (`src/matchmaker/access.py`) removes every
+  record this user may not be offered. Neither the keyword search nor the model ever
+  receives a hidden record.
+- **After the selection:** evidence and warm introduction paths are looked up in code, one
+  model call writes the explanations, and code checks every id before it is written.
+- **When the model fails or is late:** the model mode falls back to the keyword ranking, and
+  explanations fall back to sentences written by rule. A request always gets an answer.
+
+Why keywords are the default:
+
+- **The same request gives the same answer.** Three requests are re-run live at the debrief.
+- **The selection takes about 3 ms.** The model's selection takes 0.6 to 1.1 s.
+- **A sentence in a profile cannot move a rank.** In model mode the model reads every
+  profile and decides the order.
+
+The gap between the two scores, 0.013 on 10 requests, is too small to say that one mode
+ranks better. The comparison is in
+[`docs/evaluation-and-scale.md`](docs/evaluation-and-scale.md).
+
+Other commands:
+
+- `uv run matchmaker run --no-model` calls no model at all: keyword selection, explanations
+  written by rule. No API key is needed, and it is what a run without a key does.
+- `uv run matchmaker build-tables` writes the people, organisations, initiatives and notes
+  as CSV tables in `data/tables/`. The model mode reads a reduced view of these tables:
+  what a record is and does, never its visibility or opt-out.
+- `make baseline` writes `results/baseline_keyword.jsonl` (plain keyword search) and
+  `results/baseline_rules.jsonl` (the default mode's ranking with no model), and scores
+  both.
+
+What we assumed along the way is in [`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md).
 
 ## Quality gates
 
@@ -142,6 +179,7 @@ It also lists the points where the material is silent or contradicts itself.
 ├── data/
 │   ├── meridian_case_pack/         the case pack, exactly as received
 │   ├── secretariat_rules.json      introduction rules, written and approved by a person
+│   ├── tables/                     people, organisations, initiatives and notes as CSV
 │   └── meridian_case_pack.sha256   SHA-256 of each of its 86 files
 ├── Dockerfile              two stages: uv builder → slim runtime, non-root
 ├── compose.yaml            the image plus Phoenix, the trace viewer

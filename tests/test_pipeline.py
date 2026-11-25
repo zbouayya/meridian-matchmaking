@@ -16,7 +16,7 @@ import anthropic
 import pytest
 
 from matchmaker import pipeline, tracing
-from matchmaker.baseline import ALL_KINDS_NOTE, Request
+from matchmaker.baseline import ALL_KINDS_NOTE, UNKNOWN_USER_NOTE, Request
 from matchmaker.corpus import KINDS, Corpus, load
 from tests.spec import checks
 from tests.spec.oracle import SECRETARIAT_RULES_FILE, Oracle, load_oracle, run_scorer
@@ -247,6 +247,7 @@ def test_an_unknown_user_is_offered_nothing(corpus: Corpus) -> None:
         "query_id": "T5",
         "latency_ms": answered.line["latency_ms"],
         "results": [],
+        "note": UNKNOWN_USER_NOTE,
     }
     assert scripted.prompts == []
 

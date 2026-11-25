@@ -111,8 +111,15 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--out",
         type=Path,
-        default=DEFAULT_RESULTS_OUT,
+        default=None,
         help=f"where the result lines are written (default: {DEFAULT_RESULTS_OUT})",
+    )
+    run.add_argument(
+        "--retrieval",
+        choices=("rules", "model"),
+        default="rules",
+        help="who selects the matches: the rule-based ranking, or a model shown the "
+        "table of records the user may be offered (default: rules)",
     )
     run.add_argument(
         "--no-model",
@@ -120,6 +127,16 @@ def build_parser() -> argparse.ArgumentParser:
         help="call no model: explanations are written by rule",
     )
     run.set_defaults(handler=_run)
+
+    build_tables = commands.add_parser(
+        "build-tables",
+        help="write the pack's people, organisations, initiatives and notes as CSV tables",
+    )
+    build_tables.add_argument("--pack", type=Path, default=None, help="pack directory")
+    build_tables.add_argument(
+        "--out", type=Path, default=Path("data") / "tables", help="folder for the CSV files"
+    )
+    build_tables.set_defaults(handler=_build_tables)
     return parser
 
 
@@ -166,12 +183,27 @@ def _baseline(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def _build_tables(args: argparse.Namespace) -> int:
+    from matchmaker import tables
+    from matchmaker.corpus import load
+
+    pack_dir = resolve_pack_dir(args.pack)
+    if not pack_dir.exists():
+        print(f"error: {pack_dir} not found", file=sys.stderr)
+        return EXIT_PACK_NOT_FOUND
+    for path in tables.write(load(pack_dir), args.out):
+        print(f"written  {path}")
+    return EXIT_OK
+
+
 def _run(args: argparse.Namespace) -> int:
     # Imported here: the model SDK is a large import that the other commands do not need.
     import os
     import statistics
 
-    from matchmaker import llm, pipeline, ranking, taxonomy, tracing
+    from matchmaker import llm, pipeline, ranking, selection, taxonomy, tracing
+    from matchmaker.corpus import Record
+    from matchmaker.keyword import Match
 
     pack_dir = resolve_pack_dir(args.pack)
     queries = args.queries or pack_dir / "eval" / "queries_public.jsonl"
@@ -180,21 +212,30 @@ def _run(args: argparse.Namespace) -> int:
             print(f"error: {path} not found", file=sys.stderr)
             return EXIT_PACK_NOT_FOUND
     settings.load_env_file()
+    by_model = args.retrieval == "model" and not args.no_model
+    suffix = "_model" if by_model else ""
+    out: Path = args.out or Path("results") / f"results{suffix}.jsonl"
     # Every run leaves a trace of its steps next to its results, unless told otherwise.
     # That file holds one run: the previous one is replaced, not appended to.
     if not os.environ.get(tracing.TRACE_FILE_ENV):
-        trace_file = args.out.with_name("traces.jsonl")
+        trace_file = out.with_name(f"traces{suffix}.jsonl")
         trace_file.unlink(missing_ok=True)
         os.environ[tracing.TRACE_FILE_ENV] = str(trace_file)
-    stats_out = args.out.with_name("run_stats.jsonl")
-    ranker = ranking.make_ranker(
-        ranking.Options(synonyms=True, theme_boost=True), taxonomy.load(pack_dir)
-    )
+    stats_out = out.with_name(f"run_stats{suffix}.jsonl")
+    options = ranking.Options(synonyms=True, theme_boost=True)
+    themes = taxonomy.load(pack_dir)
+
+    def rank_all(query: str, records: Sequence[Record]) -> list[Match]:
+        return ranking.rank(query, records, options, themes, limit=max(len(records), 1))
+
     provider = tracing.setup()
     try:
         client = None if args.no_model else llm.make_client()
+        ranker: ranking.Ranker = ranking.make_ranker(options, themes)
+        if by_model and client is not None:
+            ranker = selection.ModelRanker(client, rank_all)
         answers = pipeline.run(
-            pack_dir, queries, args.out, ranker=ranker, client=client, stats_out=stats_out
+            pack_dir, queries, out, ranker=ranker, client=client, stats_out=stats_out
         )
     finally:
         tracing.shutdown(provider)
@@ -204,7 +245,12 @@ def _run(args: argparse.Namespace) -> int:
     by_model = sum(s.get("explained_by_model", 0) for s in stats)
     results = sum(s.get("results", 0) for s in stats)
     cost = sum(s.get("cost_usd") or 0.0 for s in stats)
+    retrievals = [s.get("retrieval", {}) for s in stats]
+    cost += sum(r.get("cost_usd") or 0.0 for r in retrievals)
+    chosen_by_model = sum(1 for r in retrievals if r.get("by") == "model")
     print(f"requests     {len(answers)}")
+    by_rules = len(answers) - chosen_by_model
+    print(f"retrieval    {chosen_by_model} chosen by the model, {by_rules} by rules")
     print(
         f"results      {results}, {by_model} explained by the model, {results - by_model} by rule"
     )
@@ -218,7 +264,7 @@ def _run(args: argparse.Namespace) -> int:
 
     for record_id, found in sorted(load(pack_dir).hidden_text.items()):
         print(f"hidden text  removed from {record_id} ({', '.join(found)}): for a person to check")
-    print(f"written      {args.out}, {stats_out}")
+    print(f"written      {out}, {stats_out}")
     return EXIT_OK
 
 
