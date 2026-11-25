@@ -1,6 +1,6 @@
 # Every target here is what CI runs, so "it passes locally" and "it passes in CI" are the
 # same statement. See .github/workflows/ci.yml.
-.PHONY: install lint format typecheck test specs check run baseline docker-build docker-run start stop ci
+.PHONY: install lint format typecheck test specs check run baseline viewer run-traced docker-build docker-run start stop ci
 
 IMAGE ?= meridian-matchmaking:local
 
@@ -49,6 +49,17 @@ baseline:
 	uv run --frozen python -B data/meridian_case_pack/eval/score.py --results results/baseline_keyword.jsonl
 	uv run --frozen matchmaker baseline --synonyms --theme-boost --out results/baseline_rules.jsonl
 	uv run --frozen python -B data/meridian_case_pack/eval/score.py --results results/baseline_rules.jsonl
+
+# The trace viewer alone (Phoenix, the only part that needs Docker): http://localhost:6006
+viewer:
+	docker compose up --detach --wait phoenix
+
+# The same run as `make run`, with every step also sent to the viewer. Prompts and answers
+# are included in the traces because the pack is synthetic and the viewer is local.
+run-traced: viewer
+	OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:6006 ANTHROPIC_OPEN_TELEMETRY_TRACES_CONTENT_MODE=content uv run --frozen matchmaker run
+	uv run --frozen python -B data/meridian_case_pack/eval/score.py --results results/results.jsonl
+	@echo "traces   http://localhost:6006   (project: meridian-matchmaking)"
 
 docker-build:
 	docker build -t $(IMAGE) .
