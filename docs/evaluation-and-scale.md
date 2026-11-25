@@ -1,8 +1,5 @@
 # Evaluation and scale
 
-> **Draft.** The headings are the ones the brief asks for in Part 3. Section 3 is drafted;
-> sections 1 and 2 still have `TODO` lines. None may remain when this is sent.
-
 ## 1. Technical evaluation
 
 - **Scorer output on the 10 public requests** (`make run`, 25 November 2026, model: `claude-haiku-5-5`):
@@ -70,57 +67,45 @@
 
   In every row, hidden text is removed from the records, duplicate person records are merged, and organisations, which have no descriptive text, are searched by their theme tags. The system's row has the same ranking as the row above it: the model only writes the explanations.
 
-- **What each component adds over it:** `TODO`
-- **The two failure cases that worry us most:** `TODO`
-- **Measuring answer quality in production, where there are no labels:** `TODO`
+- **The two failure cases that worry us most:**
+
+  1. **Data that is not kept up to date.** The tool is not responsible for data quality, and should not be. It applies what the data says. If a relationship manager does not update a relationship, an access right, an opt-out or a pause, the tool applies the old value, correctly and with confidence. No test on our side catches that: the control sits in the managers' process, not in the code.
+  2. **A weak match that reads well.** The tool returns whatever shares words or a theme with the request, with a fluent explanation, and it has no threshold below which a weak match is held back. Matching rests on shared words and on a taxonomy kept by hand, so a request outside both gets plausible suggestions that are wrong, and nothing signals it. We measured on 10 requests that rules handle well, so we do not know how often this happens. During the MVP the manager's review catches it. In self-service nothing would.
+
+- **Measuring answer quality in production, where there are no labels:**
+
+  - **Traces.** Every request is traced step by step, to a file and to the Phoenix viewer: what was called, in what order, how long it took and what it cost. This allows offline analysis of what fails, where and why.
+  - **The managers' decisions.** Each approval or rejection, with its reason, is a label. Quality without labels only becomes a question in self-service, and by then the MVP phase has produced that feedback.
 
 ## 2. Business value measurement
 
-- **Activity, separated from outcomes:** `TODO`
-- **How a renewal or an upgrade is attributed to better matchmaking:** `TODO`
-- **What we would not claim:** `TODO`
+- **Activity, separated from outcomes.** Activity is what the tool can count: requests, suggestions, approvals, time to an answer. The outcome is whether the two members connected, and whether the member judged the connection valuable. Today's data records neither: the extract holds no trace of introductions made, or of what came of them.
+- **How a renewal or an upgrade is attributed to better matchmaking.** Not with today's data model. Part of what matters lives in emails and documents, not in fields: a pause, two people who must not be paired. Attribution needs a canonical set of data, kept up to date, where every action or piece of information that a relationship manager should know about a member is logged: introductions proposed, made and followed up, and their outcome. Helping managers log this with little friction is probably a separate product. It could sit in the same tool, but it is a different algorithm from the matchmaking proposed here.
+- **What we would not claim:**
+  - That an introduction caused a renewal. At best, members who received introductions they valued renew more often.
+  - That a score on 10 labelled requests measures value for members. The labels count people a member already knows as good answers (Q-01 in `ASSUMPTIONS.md`).
+  - That the tool measures the quality of a connection. Only the member and the manager can.
 
 ## 3. Scale plan (one page)
 
-> **Draft, to confirm.** The measured figures come from the prototype. The phases follow the
-> roll-out in the business memo. The diagrams are in [`architecture.md`](architecture.md).
+We do not draw a production architecture here. That choice has to be made on the full data, not on an extract of 87 records. What we can state is what scales as built, what does not, and what follows.
 
-The prototype reads 87 records from files, selects in about 3 ms and spends about 2 seconds
-on one model call per request. From there to production:
+**What scales as built: the guardrails around retrieval and around the model.** Access rights applied in code before any search, the two limits on who is suggested, the Secretariat's rules, the check of every answer, the fallback when the model is late, and the trace of every step. They take a few milliseconds per request and do not depend on how the matching is done.
 
-- **Data pipeline from the CRM and events.** A sync copies records, relationships and access
-  fields into one store on every change. Hidden text is removed and reported to a person,
-  as today. The pipeline does not repair data: doubtful fields go back to the relationship
-  managers.
-- **Keeping access rights in sync.** Rights are read from the store on every request, never
-  copied into a prompt or a cache. A record whose rights could not be refreshed is treated
-  as restricted. The acceptable delay is to be set with Engineering.
-- **Indexing and caching for the Summit peak.** A search index with the access filter inside
-  the query returns ranked results in milliseconds, with no model. Explanations are the
-  bottleneck at 3,000 simultaneous requests: they are cached per record and clearance
-  level, and written by rule when the model is late.
-- **Cost per request.** Measured: $0.0005 with keyword selection, $0.0013 with selection by
-  a model, so $1.50 and $3.80 for 3,000 requests. Every request reports its tokens and cost.
-- **CI/CD for prompts and models, with evaluation as a release gate.** Today: prompts
-  versioned with the code, 241 offline tests on every push, no real model call in CI. To
-  add: a labelled set run with real calls on every change of prompt, model or rule. One
-  access violation, or a relevance drop beyond an agreed margin, blocks the release.
-- **Monitoring for relevance drift and leaks.** Leaks: every answer is checked in code, and
-  planted records that no user may see raise an alert if one appears. Drift: the weekly
-  share of suggestions approved, of requests with no result and of fallbacks.
-- **Human review before an introduction is sent.** A relationship manager approves every
-  suggestion. Each approval or rejection is recorded with its reason. That record becomes
-  the labelled set, and the evidence for handing simple cases over.
-- **Swiss data protection (nFADP) for member data.** Profiles and notes on named people are
-  personal data, processed abroad by the model provider. Before the pilot: a processing
-  agreement (Art. 9), transfer safeguards (Art. 16) and an impact assessment (Art. 22). The
-  model receives only records this user may see, and a person decides every introduction
-  (Art. 21). To be validated by the Forum's data protection adviser.
+**What does not scale:**
 
-### Roadmap in three phases
+- **The relationships file.** It grows faster than the number of participants and organisations: 229 relationships for 50 people here. The prototype reads it whole on every request, which will not hold.
+- **Matching by a model that reads everything.** The model reads about 110 tokens per record. At 5,000 profiles that is about 550,000 tokens per request. Cost and latency rise with the network, and a model given that much context becomes less reliable (context rot).
+- **The taxonomy and the languages.** Matching across English, French and Spanish rests on 12 themes and their synonyms, kept by hand. That upkeep does not survive the full data.
 
-| Phase | What it does | What it must prove |
-|---|---|---|
-| 1. Pilot, 90 days | A few relationship managers, live CRM data read-only, every suggestion reviewed. | Zero leaks. A good answer within a day, not 3 to 5. An approval rate agreed beforehand. |
-| 2. All relationship managers | Sync, access rights and release gate in production. Simple cases defined from the recorded reviews. | Rights changes take effect within the agreed delay. Data upkeep at a workload the managers accept. |
-| 3. Self-service for simple cases | Members, then Summit participants. Ambiguous cases stay with a manager. | 3,000 simultaneous requests under 4 seconds. Zero leaks under adversarial tests. Quality holds without review. |
+**The likely direction** is retrieval over an index (a RAG approach), with the access filter applied inside the search. Which index, and whether it holds at a Summit peak of 3,000 simultaneous requests, is decided on data: measured on the full network, with the scorer and the managers' feedback as the gate.
+
+**The points the brief asks for:**
+
+- **Data pipeline and access rights in sync.** The tool reads what the systems of record say and repairs nothing. Rights are read at request time and never copied into a prompt. A record whose rights cannot be read is treated as restricted.
+- **Indexing and caching for the Summit peak.** An index chosen on data, as above. Ranked results need no model. The explanation is the slow part, and is written by rule when the model is late.
+- **Cost per request.** Measured: $0.0005 with keyword selection, $0.0013 with selection by a model.
+- **CI/CD for prompts and models, with evaluation as a release gate.** Today: prompts versioned with the code, 241 offline tests on every push, no real model call in CI. To add: the labelled requests produced by the managers' reviews, run on every change of prompt, model or rule. One access violation blocks the release.
+- **Monitoring for relevance drift and leaks.** Every answer is checked in code before it leaves. Traces show what failed and where. The managers' approval rate shows drift.
+- **Human review before an introduction is sent.** In the MVP a relationship manager approves every suggestion. Self-service opens only when the evidence described in the business memo exists.
+- **Swiss data protection (nFADP).** Profiles and notes on named people are personal data, processed abroad by the model provider. A processing agreement (Art. 9), transfer safeguards (Art. 16) and an impact assessment (Art. 22) come before the pilot. To be validated by the Forum's data protection adviser.

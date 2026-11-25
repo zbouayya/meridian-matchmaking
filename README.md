@@ -15,7 +15,6 @@ access rights.
 | Code and README | this repository |
 | `results.jsonl` on the 10 public requests | [`results/results.jsonl`](results/results.jsonl) |
 | Evaluation and scale plan | [`docs/evaluation-and-scale.md`](docs/evaluation-and-scale.md) |
-| Architecture, as built and in production | [`docs/architecture.md`](docs/architecture.md) |
 | Assumptions, open questions, improvement areas | [`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md) |
 
 ## Run it
@@ -201,7 +200,6 @@ It also lists the points where the material is silent or contradicts itself.
 ├── docs/
 │   ├── business-framing.md       the memo for the two client stakeholders
 │   ├── evaluation-and-scale.md   scorer output, baseline, value metrics, scale plan
-│   ├── architecture.md           the pipeline as built and in production, two diagrams
 │   ├── ASSUMPTIONS.md            assumptions, open questions, improvement areas
 │   └── SPECS.md                  the case's explicit requirements, with ids
 ├── tests/                  pytest suite, offline
