@@ -49,8 +49,13 @@ COPY data/ data/
 
 # A fixed, high uid: not root, stable across rebuilds, and it will not collide with a host
 # user if a results directory is mounted.
+#
+# /app stays owned by root and read-only for everyone else, so the process cannot alter its
+# own code or the pack. No `chown -R` either: it would copy the whole virtualenv into a
+# second layer. The chmod makes the image independent of the file modes on the machine that
+# built it (a checkout on a Windows drive marks every file world-writable).
 RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin matchmaker \
-    && chown -R matchmaker:matchmaker /app
+    && chmod -R a=rX,u+w /app/data
 USER matchmaker
 
 ENTRYPOINT ["matchmaker"]

@@ -57,6 +57,16 @@ jobs:
         # tested against a fake, so this job can gate every push for free.
         run: uv run --frozen pytest -q
 
+      - name: Spec report
+        # One line per requirement of docs/SPECS.md, with what happened to it on this run:
+        # passed, failed, waiting for results, pending or manual. Published even when a test
+        # failed — that is when it is most useful.
+        if: always()
+        run: |
+          if [ -f build/spec-report.md ]; then
+            cat build/spec-report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   image:
     runs-on: ubuntu-latest
     steps:
@@ -124,3 +134,8 @@ jobs:
           set -euo pipefail
           docker run --rm "$IMAGE" --version
           docker run --rm --network none --read-only "$IMAGE"
+
+      - name: Compose file is valid
+        # compose.yaml adds the trace viewer next to the image. Only its syntax is checked
+        # here: the viewer is optional at run time, so CI does not pull or start it.
+        run: docker compose config --quiet
