@@ -126,6 +126,20 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="call no model: explanations are written by rule",
     )
+    run.add_argument(
+        "--recent-contact-days",
+        type=int,
+        default=None,
+        help="a person the requester was in touch with in the last N days is not "
+        "suggested (default: 90; 0 turns the limit off)",
+    )
+    run.add_argument(
+        "--max-suggestions",
+        type=int,
+        default=None,
+        help="a person is suggested at most N times in one run of requests "
+        "(default: 2; 0 turns the limit off)",
+    )
     run.set_defaults(handler=_run)
 
     build_tables = commands.add_parser(
@@ -201,7 +215,7 @@ def _run(args: argparse.Namespace) -> int:
     import os
     import statistics
 
-    from matchmaker import llm, pipeline, ranking, selection, taxonomy, tracing
+    from matchmaker import limits, llm, pipeline, ranking, selection, taxonomy, tracing
     from matchmaker.corpus import Record
     from matchmaker.keyword import Match
 
@@ -234,8 +248,16 @@ def _run(args: argparse.Namespace) -> int:
         ranker: ranking.Ranker = ranking.make_ranker(options, themes)
         if by_model and client is not None:
             ranker = selection.ModelRanker(client, rank_all)
+        days, most = args.recent_contact_days, args.max_suggestions
         answers = pipeline.run(
-            pack_dir, queries, out, ranker=ranker, client=client, stats_out=stats_out
+            pack_dir,
+            queries,
+            out,
+            ranker=ranker,
+            client=client,
+            stats_out=stats_out,
+            recent_contact_days=limits.RECENT_CONTACT_DAYS if days is None else days,
+            max_suggestions=limits.MAX_SUGGESTIONS if most is None else most,
         )
     finally:
         tracing.shutdown(provider)
@@ -258,6 +280,10 @@ def _run(args: argparse.Namespace) -> int:
         median, slowest = statistics.median(latencies), latencies[-1]
         print(f"latency      median {median:.0f} ms, slowest {slowest:.0f} ms")
     print(f"model cost   ${cost:.4f}")
+    left_out = [s.get("left_out", {}) for s in stats]
+    recent = sum(len(x.get("recent_contact", ())) for x in left_out)
+    repeated = sum(len(x.get("repetition", ())) for x in left_out)
+    print(f"left out     {recent} for a recent contact, {repeated} already suggested enough")
     for reason in sorted({s["fallback_reason"] for s in stats if s.get("fallback_reason")}):
         print(f"fallback     {reason}")
     from matchmaker.corpus import load

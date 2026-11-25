@@ -26,6 +26,7 @@ from matchmaker import (
     evidence,
     explain,
     keyword,
+    limits,
     ranking,
     sanitize,
     selection,
@@ -71,8 +72,13 @@ def answer(
     *,
     model: str | None = None,
     budget_seconds: float = explain.DEFAULT_BUDGET_SECONDS,
+    ledger: limits.Ledger | None = None,
+    recent_contact_days: int = limits.RECENT_CONTACT_DAYS,
 ) -> Answered:
-    """Answer one request. `client=None` means no model: rule-based explanations."""
+    """Answer one request. `client=None` means no model: rule-based explanations.
+
+    `ledger` counts who has already been suggested; without one, repetition is not limited.
+    """
     started = time.perf_counter()
     rank = ranker or ranking.make_ranker(ranking.Options())
     # Hidden text is removed from the request before it is searched or shown to a model.
@@ -87,16 +93,20 @@ def answer(
             span.set_attribute("matchmaker.query_id", request.query_id)
             span.set_attribute("matchmaker.user_id", request.user_id)
             with tracing.step("matchmaker.access_filter"):
+                allowed = access.candidates(corpus, user, request.entity_types, day)
+                # People the requester was in touch with recently, or who have already
+                # been suggested often enough, are removed here, before any ranking.
+                limited = limits.apply(corpus, user, allowed, day, ledger, recent_contact_days)
                 # The same person is never offered twice (duplicate records are merged).
-                pool = dedupe.merge_duplicates(
-                    access.candidates(corpus, user, request.entity_types, day)
-                )
+                pool = dedupe.merge_duplicates(limited.kept)
             filtered = time.perf_counter()
             hidden = evidence.hidden_names(corpus, user)
             if isinstance(rank, selection.ModelRanker):
                 rank.forbidden = hidden
             with tracing.step("matchmaker.rank", "RETRIEVER"):
                 matches = rank(query, pool)[:MAX_RESULTS]
+            if ledger is not None:
+                ledger.record(m.record for m in matches)
             # A ranker that asks a model says so, and what it cost.
             retrieval = dict(getattr(rank, "last", None) or {"by": "rules"})
             ranked = time.perf_counter()
@@ -138,6 +148,10 @@ def answer(
             span.set_attribute("matchmaker.results", len(results))
         stats |= {
             "candidates": len(pool),
+            "left_out": {
+                "recent_contact": list(limited.recent_contact),
+                "repetition": list(limited.repetition),
+            },
             "retrieval": retrieval,
             "results": len(results),
             "ms": {
@@ -183,13 +197,18 @@ def run(
     stats_out: Path | None = None,
     model: str | None = None,
     budget_seconds: float = explain.DEFAULT_BUDGET_SECONDS,
+    max_suggestions: int = limits.MAX_SUGGESTIONS,
+    recent_contact_days: int = limits.RECENT_CONTACT_DAYS,
 ) -> list[Answered]:
     """Answer every request in `queries`; write the result lines to `out`, one per request.
 
     `stats_out`, when given, receives one line per request saying where its time and its
-    tokens went.
+    tokens went. One ledger of suggestions is kept for the run, so the requests are
+    answered in the order of the file and a person is suggested `max_suggestions` times at
+    most.
     """
     corpus = load(pack_dir)
+    ledger = limits.Ledger(max_suggestions)
     answers = [
         answer(
             corpus,
@@ -199,6 +218,8 @@ def run(
             today,
             model=model,
             budget_seconds=budget_seconds,
+            ledger=ledger,
+            recent_contact_days=recent_contact_days,
         )
         for request in read_requests(queries)
     ]

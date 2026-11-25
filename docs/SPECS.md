@@ -69,7 +69,7 @@ Each run writes `build/spec-report.md`: one line per spec, with what happened on
 | FUN-04 | For each person, a warm path from the requester through relationships the user may see: a chain of person ids, each step an edge in `relationships.csv`, ending at the match. For member users it starts with their own `person_id`. | Brief, Part 2; README | results |
 | FUN-05 | Understands the request: themes, region, entity type, language. Requests and profiles come in English, French and Spanish. | Brief, Part 2 | pending |
 | FUN-06 | Ingests the PDF, Word and email files: parses them, chunks them and reads their classification. | Brief, Part 2 | test (partial) |
-| FUN-07 | Retrieves and ranks people, organisations and initiatives, combining text relevance with signals from `relationships.csv` and recency. | Brief, Part 2 | pending |
+| FUN-07 | Retrieves and ranks people, organisations and initiatives, combining text relevance with signals from `relationships.csv` and recency. | Brief, Part 2 | test (partial) |
 | FUN-08 | Logs a trace of each step: which tools were called, in what order, and how long each took. | Brief, Part 2 | pending |
 | FUN-09 | Output is one JSON line per query: `query_id`, `latency_ms`, and `results` with `id`, `rank`, `explanation`, `evidence`, `warm_path`. A result id is a person (P-), organisation (O-) or initiative (I-); an evidence id is a P-, O-, I-, N-, E-, D- or M- record. | README, Output format | results |
 | FUN-10 | Returning no results is a valid answer when nothing visible fits. | README, Output format | test |
@@ -81,8 +81,8 @@ Each run writes `build/spec-report.md`: one line per spec, with what happened on
 |---|---|---|---|
 | REL-01 | Cross-lingual matching across English, French and Spanish. | Brief, probe table | test (partial) |
 | REL-02 | Duplicate person records are resolved: the same person never appears twice. | Brief, probe table; Scorer | results |
-| REL-03 | A diverse top 5 rather than the same famous names. | Brief, probe table | pending |
-| REL-04 | Sensible handling of region and recency. | Brief, probe table | pending |
+| REL-03 | A diverse top 5 rather than the same famous names. | Brief, probe table | test (partial) |
+| REL-04 | Sensible handling of region and recency. | Brief, probe table | test (partial) |
 | REL-05 | No invented relationships: every warm-path step is a real edge and every cited record exists. | Brief, Part 1; Scorer | results |
 | REL-06 | nDCG@5 and Precision@5 are measured on the public requests. The brief sets no threshold. | Brief, probe table; README | results |
 

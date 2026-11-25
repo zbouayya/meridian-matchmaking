@@ -21,7 +21,8 @@ The engineering base is in place; the agent is built on top of it.
 - [x] `results/results.jsonl` on the 10 public requests, with the scorer output
 - [x] Documents and emails read by the code, classified by what is written inside them, cited as evidence
 - [x] Hidden text removed from records and requests; Secretariat rules in a structured file
-- [ ] Region, recency and diversity in the ranking; latency report
+- [x] Two limits in code, before the ranking: no recent contact, no person suggested too often
+- [ ] Region and stale records in the ranking; latency report
 - [ ] Assumptions, what was cut and what comes next
 - [ ] Where AI coding assistants were used and what was checked by hand
 
@@ -32,7 +33,8 @@ The engineering base is in place; the agent is built on top of it.
 | Business framing memo | [`docs/business-framing.md`](docs/business-framing.md) | First draft |
 | Code and README | this repository | In progress |
 | `results.jsonl` on the 10 public requests | [`results/results.jsonl`](results/results.jsonl) | Done, 25 November run |
-| Evaluation and scale plan | [`docs/evaluation-and-scale.md`](docs/evaluation-and-scale.md) | Placeholder |
+| Evaluation and scale plan | [`docs/evaluation-and-scale.md`](docs/evaluation-and-scale.md) | Scale plan drafted; evaluation in progress |
+| Architecture, as built and in production | [`docs/architecture.md`](docs/architecture.md) | Drafted, two diagrams |
 
 ## Run it
 
@@ -88,16 +90,19 @@ The matchmaker can choose its five matches in two ways. **Keywords are the defau
 | Who chooses the five | Code: keyword search, widened with the taxonomy's synonyms in three languages, then re-ranked by theme | Claude Haiku, shown a table of the records this user may be offered |
 | Model calls per request | 1, to write the explanations | 2: the selection, then the explanations |
 | Same result on every run | Yes | No |
-| nDCG@5 / P@5, 10 public requests | 0.893 / 0.980 | 0.906 / 0.960 (one run) |
+| nDCG@5 / P@5, 10 public requests | 0.893 / 0.980 | 0.929 / 0.960 (one run; an earlier one gave 0.906) |
 | Median / slowest request | 2.0 s / 2.9 s | 2.6 s / 3.6 s |
-| Model cost, 10 requests | $0.0050 | $0.0122 |
+| Model cost, 10 requests | $0.0048 | $0.0126 |
 | Results file | `results/results.jsonl` | `results/results_model.jsonl` |
 
 Both modes share everything else:
 
-- **Before the selection:** the access filter (`src/matchmaker/access.py`) removes every
-  record this user may not be offered. Neither the keyword search nor the model ever
+- **Before the selection, access:** the access filter (`src/matchmaker/access.py`) removes
+  every record this user may not be offered. Neither the keyword search nor the model ever
   receives a hidden record.
+- **Before the selection, two limits** (`src/matchmaker/limits.py`): a person the requester
+  was in touch with in the last 90 days is not suggested, and no person is suggested more
+  than twice in one run of requests. Both are filters in code, like the access filter.
 - **After the selection:** evidence and warm introduction paths are looked up in code, one
   model call writes the explanations, and code checks every id before it is written.
 - **When the model fails or is late:** the model mode falls back to the keyword ranking, and
@@ -118,12 +123,15 @@ Other commands:
 
 - `uv run matchmaker run --no-model` calls no model at all: keyword selection, explanations
   written by rule. No API key is needed, and it is what a run without a key does.
+- `--recent-contact-days N` and `--max-suggestions N` change the two limits; 0 turns one
+  off. Because of the second limit, requests are answered in the order of the file, and a
+  request run alone can differ from the same request inside a run.
 - `uv run matchmaker build-tables` writes the people, organisations, initiatives and notes
   as CSV tables in `data/tables/`. The model mode reads a reduced view of these tables:
   what a record is and does, never its visibility or opt-out.
 - `make baseline` writes `results/baseline_keyword.jsonl` (plain keyword search) and
-  `results/baseline_rules.jsonl` (the default mode's ranking with no model), and scores
-  both.
+  `results/baseline_rules.jsonl` (keyword search with the taxonomy's synonyms and the theme
+  re-ranking, before the two limits, with no model), and scores both.
 
 What we assumed along the way is in [`docs/ASSUMPTIONS.md`](docs/ASSUMPTIONS.md).
 
@@ -173,6 +181,8 @@ It also lists the points where the material is silent or contradicts itself.
 ├── docs/
 │   ├── business-framing.md       the memo for the two client stakeholders
 │   ├── evaluation-and-scale.md   scorer output, baseline, value metrics, scale plan
+│   ├── architecture.md           the pipeline as built and in production, two diagrams
+│   ├── ASSUMPTIONS.md            assumptions, open questions, improvement areas
 │   └── SPECS.md                  the case's explicit requirements, with ids
 ├── tests/                  pytest suite, offline
 │   └── spec/               the specs as tests, and the report
