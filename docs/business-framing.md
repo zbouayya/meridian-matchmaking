@@ -33,16 +33,14 @@ flowchart LR
     ask(["Manager asks<br/>in plain language"])
     data[("CRM, events,<br/>documents")]
     access["Access rights<br/>and limits"]
-    search["Search<br/>and ranking"]
-    proof["Evidence and<br/>warm path"]
+    search["Search, evidence,<br/>warm path"]
     explain["Explanations"]
     verify["Check<br/>the answer"]
-    review(["Manager reviews,<br/>approves or rejects"])
+    review(["Manager approves<br/>or rejects,<br/>records context"])
     member(["Member"])
 
-    ask --> access --> search --> proof --> explain --> verify --> review --> member
+    ask --> access --> search --> explain --> verify --> review --> member
     data --> access
-    review -- "decisions and context" --> data
 
     classDef model stroke-dasharray: 6 4,stroke-width:2px
     class explain model
